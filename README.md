@@ -1,5 +1,15 @@
 # Easy stremio on Docker
 
+## Fork Disclaimer
+- This is a fork of the original [stremio-docker rep](https://github.com/tsaridas/stremio-docker)
+- This fork modifes the server.js and adds the ability to define a prefix
+  - This Prefix can be added with the env URL_PREFIX
+
+| Env | Default | Example           | Description                      |
+| - | - |-------------------|----------------------------------|
+| `URL_PREFIX` | - | `/stremio-server` | Sets a url prefix for the server |
+
+
 ## Introduction
 
 [Stremio](https://www.stremio.com/) is a free application which lets you stream your favorite shows and movies. 

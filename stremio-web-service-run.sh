@@ -1,17 +1,18 @@
-#!/bin/sh -e
+#!/bin/sh
+set -e
 node server.js &
 sleep 1
 if [ -z "$APP_PATH" ]; then
-	CONFIG_FOLDER="$HOME"/.stremio-server/
+    CONFIG_FOLDER="$HOME"/.stremio-server/
 else
-	CONFIG_FOLDER=$APP_PATH/
+    CONFIG_FOLDER=$APP_PATH/
 fi
 
-if [ ! -z "$IPADDRESS" ]; then 
-	curl "http://localhost:11470/get-https??authKey=&ipAddress=$IPADDRESS"
-	CERT=$(node extract_certificate.js "$CONFIG_FOLDER")
-	echo "$IPADDRESS" "$CERT" >> /etc/hosts
-	http-server build/ -p 8080 -d false -S -K "$CONFIG_FOLDER""$CERT".pem -C "$CONFIG_FOLDER""$CERT".pem
+if [ ! -z "$IPADDRESS" ]; then
+    curl "http://localhost:11470/get-https??authKey=&ipAddress=$IPADDRESS"
+    CERT=$(node extract_certificate.js "$CONFIG_FOLDER")
+    echo "$IPADDRESS" "$CERT" >> /etc/hosts
+    http-server build/ -p 8080 -d false -S -K "$CONFIG_FOLDER""$CERT".pem -C "$CONFIG_FOLDER""$CERT".pem
 else
-	http-server build/ -p 8080 -d false
+    http-server build/ -p 8080 -d false
 fi

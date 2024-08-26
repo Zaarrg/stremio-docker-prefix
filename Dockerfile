@@ -8,8 +8,8 @@ FROM base AS ffmpeg
 # We build our own ffmpeg since 4.X is the only one supported.
 ENV BIN="/usr/bin"
 RUN cd && \
-  apk add --no-cache --virtual \ 
-  .build-dependencies \ 
+  apk add --no-cache --virtual \
+  .build-dependencies \
   gnutls \
   freetype-dev \
   gnutls-dev \
@@ -17,19 +17,19 @@ RUN cd && \
   libass-dev \
   libogg-dev \
   libtheora-dev \
-  libvorbis-dev \ 
+  libvorbis-dev \
   libvpx-dev \
-  libwebp-dev \ 
+  libwebp-dev \
   libssh2 \
   opus-dev \
   rtmpdump-dev \
   x264-dev \
   x265-dev \
   yasm-dev \
-  build-base \ 
-  coreutils \ 
-  gnutls \ 
-  nasm \ 
+  build-base \
+  coreutils \
+  gnutls \
+  nasm \
   dav1d-dev \
   libbluray-dev \
   libdrm-dev \
@@ -89,6 +89,15 @@ WORKDIR /srv/stremio-server
 COPY --from=builder-web /srv/stremio-web/build ./build
 COPY --from=builder-web /srv/stremio-web/server.js ./
 RUN yarn global add http-server --no-audit --no-optional --mutex network --no-progress --ignore-scripts
+# Copy the modified createApp function and the replacement script
+COPY modified/createApp.js /tmp/createApp.js
+COPY replace.sh /tmp/replace.sh
+
+# Make the script executable and run it
+RUN chmod +x /tmp/replace.sh && /tmp/replace.sh
+
+# Remove the temporary files
+RUN rm /tmp/createApp.js /tmp/replace.sh
 
 COPY ./stremio-web-service-run.sh ./
 COPY ./extract_certificate.js ./
@@ -120,7 +129,7 @@ ENV APP_PATH=
 ENV NO_CORS=
 ENV CASTING_DISABLED=
 
-# Do not change the above ENVs. 
+# Do not change the above ENVs.
 
 # Set this to your lan or public ip.
 ENV IPADDRESS=
