@@ -8,6 +8,7 @@ on:
       - main
     paths:
       - 'Dockerfile'
+  workflow_dispatch:
 
 env:
   TMP_LOCAL_IMAGE: ghcr.io/zaarrg/stremio-docker-prefix
